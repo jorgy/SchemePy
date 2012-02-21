@@ -1,25 +1,26 @@
 import sys
 import re
 
+# Define lexical categories
+ID = 'identifier'
+
+
+def match_identifier(st):
+	extended_chars = r"!$%&*+-./:<=>?@^_~"
+	pattern = re.compile("^[\+\-]|(\.\.\.)|([a-z" + extended_chars + "][a-z0-9" + extended_chars + "]*)")
+	identifier = re.match(pattern, st)
+	if identifier:
+		return identifier.group(0)
+	else:
+		return None
+
 
 def next_token(expr):
 	expr = expr.lstrip()
 
-	operator = re.match("[()\+\-\*\/]", expr)
-	if operator:
-		return operator.group(0)
-
-	quoted_match = re.match("^(\'[a-zA-Z0-9\-]+)", expr)
-	if quoted_match:
-		return quoted_match.group(1)
-
-	float_match = re.match("^([0-9]+\.[0-9]*)|([0-9]*\.[0-9]+)", expr)
-	if float_match:
-		return float_match.group(0)
-
-	int_match = re.match("^[0-9]+", expr)
-	if int_match:
-		return int_match.group(0)
+	identifier = match_identifier(expr)
+	if identifier:
+		return (ID, identifier)
 
 
 
@@ -29,8 +30,8 @@ def tokenize(expr):
 
 	while len(expr) != 0:
 		token = next_token(expr)
-		i = expr.index(token)
-		expr = expr[i + len(token):]
+		i = expr.index(token[1])
+		expr = expr[i + len(token[1]):]
 
 		tokens.append(token)
 
