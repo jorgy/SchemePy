@@ -2,7 +2,8 @@ import sys
 import re
 
 # Define lexical categories
-ID = 'identifier'
+ID      = 'identifier'
+COMMENT = 'comment'
 
 
 def match_identifier(st):
@@ -15,12 +16,25 @@ def match_identifier(st):
 		return None
 
 
+def match_comment(st):
+	comment = re.match("\s*(;.*)$", st)
+	if comment:
+		return comment.group(1)
+	else:
+		return None
+
+
+
 def next_token(expr):
 	expr = expr.lstrip()
 
 	identifier = match_identifier(expr)
 	if identifier:
 		return (ID, identifier)
+
+	comment = match_comment(expr)
+	if comment:
+		return (COMMENT, comment)
 
 
 
