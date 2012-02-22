@@ -1,40 +1,5 @@
 import sys
-import re
-
-# Define lexical categories
-ID      = 'identifier'
-COMMENT = 'comment'
-
-
-def match_identifier(st):
-	extended_chars = r"!$%&*+-./:<=>?@^_~"
-	pattern = re.compile("^[\+\-]|(\.\.\.)|([a-z" + extended_chars + "][a-z0-9" + extended_chars + "]*)")
-	identifier = re.match(pattern, st)
-	if identifier:
-		return identifier.group(0)
-	else:
-		return None
-
-
-def match_comment(st):
-	comment = re.match("\s*(;.*)$", st)
-	if comment:
-		return comment.group(1)
-	else:
-		return None
-
-
-
-def next_token(expr):
-	expr = expr.lstrip()
-
-	identifier = match_identifier(expr)
-	if identifier:
-		return (ID, identifier)
-
-	comment = match_comment(expr)
-	if comment:
-		return (COMMENT, comment)
+import parser
 
 
 
@@ -43,7 +8,12 @@ def tokenize(expr):
 	expr = expr.strip()
 
 	while len(expr) != 0:
-		token = next_token(expr)
+		token = parser.next_token(expr)
+
+		if token == None:
+			print 'Syntax error!'
+			return tokens
+
 		i = expr.index(token[1])
 		expr = expr[i + len(token[1]):]
 
