@@ -1,2 +1,6 @@
 # Python bytecode
 *.pyc
+
+# OS generated files
+.DS_Store*
+Icon?
