@@ -1,5 +1,6 @@
 import sys
 import parser
+import eval
 
 
 
@@ -30,7 +31,9 @@ def run_interpreter():
 			print "Bye!"
 			exit(0)
 
-		print tokenize(expr)
+		tokens = tokenize(expr)
+		evaluated = eval.eval(tokens)
+		print evaluated
 
 
 def run_file(filename):
