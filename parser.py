@@ -17,8 +17,13 @@ DOT      = 'dot'
 def match_identifier(st):
 	'''Match a single Scheme identifier'''
 
-	extended_chars = "\!\$\%\&\*\/\:\<\=\>\?\^\_\~"
-	pattern = re.compile("^([a-z" + extended_chars + "][a-z0-9" + extended_chars + "\-]*)|[\+\-]|(\.\.\.)")
+	special_initial = "\!\$\%\&\*\/\:\<\=\>\?\^\_\~"
+	initial = "[a-z" + special_initial + "]"
+	special_subsequent = "\+\-\.\@"
+	subsequent = "[a-z0-9" + special_initial + special_subsequent + "]"
+	peculiar = "(\+)|(\-)|(\.\.\.)"
+
+	pattern = "^(" + initial + subsequent + "*)|(" + peculiar + ")"
 	identifier = re.match(pattern, st)
 	if identifier:
 		return identifier.group(0)
