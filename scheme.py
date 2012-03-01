@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 import sys
 import parser
 import eval
@@ -33,7 +35,10 @@ def run_interpreter():
 
 		tokens = tokenize(expr)
 		evaluated = eval.eval(tokens)
-		print evaluated
+		if evaluated:
+			print evaluated
+		else:
+			print tokens
 
 
 def run_file(filename):
